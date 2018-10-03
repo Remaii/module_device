@@ -1,12 +1,19 @@
 'use strict';
 
-let fs = require('fs');
 let port = process.env.PORT || 3000;
-let deviceId = "dvs_kqq4c7t889041";
+
+let deviceId = "dvs_kqq4c7t889041"; // devras disparaitre ou etre charger a partir du doc de conf
+
+require('exec')("ifconfig | grep 'inet 192' | cut -d: -f2 | awk '{ print $2  }'", function(err, out, code) {
+	if (err instanceof Error) { throw err; }
+	if (code !== 0) { console.log(code, err, out)}
+	let website = "http://" + out.trim() + ":" + port.toString();
+	console.log("The configuration page is available on \n" + website + "\nwith another pc on same network");
+});
 
 let all = {
 	frontUrl: "http://localhost:" + port,
-	socketUrl: "http://192.168.0.18:4000",
+	socketUrl: process.env.NODE_ENV === "production" ? "http://remaii.tk" : "http://192.168.0.18:4000",
 	deviceId: deviceId
 };
 

@@ -1,16 +1,20 @@
 {
   "name": "module_device",
   "version": "1.0.0",
-  "description": "",
+  "description": "Device module for pairing device with website remaii.tk",
   "main": "./bin/www",
   "scripts": {
-    "test": "nodemon ./bin/www"
+    "test": "nodemon ./bin/www",
+    "start": "node ./bin/www",
+    "pm2:start": "pm2 start ./bin/www --name pi_module",
+    "pm2:reload": "pm2 reload pi_module"
   },
   "author": "rthidet",
   "license": "ISC",
   "dependencies": {
     "cookie-parser": "^1.4.3",
     "ejs": "^2.6.1",
+    "exec": "^0.2.1",
     "execa": "^0.10.0",
     "express": "^4.16.3",
     "http-errors": "^1.6.3",
