@@ -7,8 +7,7 @@ let deviceId = "dvs_kqq4c7t889041"; // devras disparaitre ou etre charger a part
 require('exec')("ifconfig | grep 'inet 192' | cut -d: -f2 | awk '{ print $2  }'", function(err, out, code) {
 	if (err instanceof Error) { throw err; }
 	if (code !== 0) { console.log(code, err, out)}
-	let website = "http://" + out.trim() + ":" + port.toString();
-	console.log("The configuration page is available on \n" + website + "\nwith another pc on same network");
+	console.log("The configuration page is available on \nhttp://" + out.trim() + ":" + port.toString() + "\nwith another pc on same network");
 });
 
 let all = {
