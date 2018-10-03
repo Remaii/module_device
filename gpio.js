@@ -1,0 +1,60 @@
+// 'use strict';
+
+const _ = require('lodash');
+const Gpio = require('onoff').Gpio;
+let PinActive = [];
+
+function changeState(nPin) {
+	console.log("changeState");
+	let pin = new gpio(nPin.port, nPin.mode);
+	// do change
+
+	pin.writeSync(!pin.readSync());
+	return ;
+};
+
+function setState(nPin, i) {
+	let mode = nPin.mode.toString().toLowerCase();
+	let number = parseInt(nPin.number);
+	let n = nPin.state ? 1 : 0;
+	PinActive[i] = nPin;
+	PinActive[i].gpio = new Gpio(number, mode);
+	setTimeout(() => {
+		PinActive[i].gpio.writeSync(0);
+	}, 500);
+	setTimeout(() => {
+		PinActive[i].gpio.writeSync(1);
+	}, 1000);
+	setTimeout(() => {
+	PinActive[i].gpio.writeSync(n);
+	}, 1500);
+};
+
+process.on('SIGINT', function () {
+	_.each(PinActive, (p) => {
+		console.log('Unexport GPIO pin:', p.name);
+		p.gpio.unexport();
+	});
+});
+
+module.exports = {
+	initial: function(device) {
+		_.each(device.pins, function(p,i) {
+			if (PinActive[i]) {
+				PinActive[i].gpio.unexport();
+			}
+			setState(p, i);
+		});
+	},
+	changeState: function(data) {
+		let found = _.find(PinActive, {uniq: data.pin.uniq });
+		if (found) {
+			found.state = !found.state;
+			let n = found.state ? 1 : 0;
+			found.gpio.writeSync(n);
+		}
+	},
+	getPinActive: function() {
+		return PinActive;
+	}
+};
