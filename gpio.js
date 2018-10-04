@@ -39,6 +39,7 @@ process.on('SIGINT', function () {
 
 module.exports = {
 	initial: function(device) {
+		console.log("init pins", device.pins.length);
 		if (device.pins.length > 0) {
 			_.each(device.pins, function (p, i) {
 				if (PinActive[i]) {
