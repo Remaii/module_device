@@ -22,8 +22,8 @@ module.exports = function(c) {
 	};
 
 	socket.on('link', function(data) {
-		// if (data.device.uniq === c.deviceId) {
-			console.log(data, 'link receive');
+		console.log(data, 'link receive, is for me?', data.device.uniq === c.deviceId ? "yes" : "no");
+		if (data.device.uniq === c.deviceId) {
 			switch (data.action) {
 				case "SayHi":
 					easyData.room = data.room;
@@ -64,6 +64,6 @@ module.exports = function(c) {
 					socket.emit('connector', easyData);
 					break;
 			}
-		// }
+		}
 	});
 };
