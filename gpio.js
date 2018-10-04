@@ -39,12 +39,14 @@ process.on('SIGINT', function () {
 
 module.exports = {
 	initial: function(device) {
-		_.each(device.pins, function(p,i) {
-			if (PinActive[i]) {
-				PinActive[i].gpio.unexport();
-			}
-			setState(p, i);
-		});
+		if (device.pins.length > 0) {
+			_.each(device.pins, function (p, i) {
+				if (PinActive[i]) {
+					PinActive[i].gpio.unexport();
+				}
+				setState(p, i);
+			});
+		}
 	},
 	changeState: function(data) {
 		let found = _.find(PinActive, {uniq: data.pin.uniq });
