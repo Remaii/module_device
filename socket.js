@@ -51,12 +51,13 @@ module.exports = function(c) {
 					});
 					break;
 				case 'update_me':
-					exec.shell('git pull').then((out) => {
+					exec.shell("git pull").then((out) => {
 						console.log(out, "Out of update, restart");
 						process.exit(1);
 						return;
 					}).catch((err) => {
-						console.log(err);
+						console.log(err, "Exit by error");
+						process.exit(1);
 						return;
 					});
 					break;
