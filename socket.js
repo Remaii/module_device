@@ -23,7 +23,6 @@ module.exports = function(c) {
 
 	socket.on('link', function(data) {
 		console.log(data, 'link receive');
-		// if (data.device.uniq === c.deviceId) {
 			switch (data.action) {
 				case "SayHi":
 					easyData.room = data.room;
@@ -52,8 +51,12 @@ module.exports = function(c) {
 					break;
 				case 'update_me':
 					exec.shell("cd " + __dirname + "; git pull").then((out) => {
-						console.log(out, "Out of update, restart");
-						process.exit(1);
+						if (out.stdout !== "Already up-to-date." && out.stdout !== "Déjà à jour." && out.stdout !== "D?j? ? jour.") {
+							console.log("Restart by pull-request and change detect", out.stdout);
+							process.exit(0);
+						} else {
+							console.log("no change detect");
+						}
 						return;
 					}).catch((err) => {
 						console.log(err, "Exit by error");
@@ -65,6 +68,5 @@ module.exports = function(c) {
 					socket.emit('connector', easyData);
 					break;
 			}
-		// }
 	});
 };
