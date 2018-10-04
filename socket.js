@@ -50,6 +50,16 @@ module.exports = function(c) {
 						return;
 					});
 					break;
+				case 'update_me':
+					exec.shell('git pull').then((out) => {
+						console.log(out, "Out of update, restart");
+						process.exit(1);
+						return;
+					}).catch((err) => {
+						console.log(err);
+						return;
+					});
+					break;
 				default:
 					socket.emit('connector', easyData);
 					break;
