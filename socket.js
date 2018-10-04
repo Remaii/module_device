@@ -22,7 +22,7 @@ module.exports = function(c) {
 	};
 
 	socket.on('link', function(data) {
-		console.log(data, 'link receive, is for me?', data.device.uniq === c.deviceId ? "yes" : "no");
+		console.log(data, 'link receive');
 		// if (data.device.uniq === c.deviceId) {
 			switch (data.action) {
 				case "SayHi":
