@@ -51,7 +51,7 @@ module.exports = function(c) {
 					});
 					break;
 				case 'update_me':
-					exec.shell("git pull").then((out) => {
+					exec.shell("cd " + __dirname + "; ls").then((out) => {
 						console.log(out, "Out of update, restart");
 						process.exit(1);
 						return;
