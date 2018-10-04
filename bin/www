@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('module-device:server');
 var http = require('http');
+let config = require('../env/');
 
 /**
  * Get port from environment and store in Express.
@@ -86,5 +87,5 @@ function onListening() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  console.log('Listening on http://localhost:' + addr.port);
+  console.log('Listening on http://localhost:' + addr.port + " or on " + config.frontUrl + " on pc on same network");
 }
