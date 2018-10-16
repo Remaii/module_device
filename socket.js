@@ -69,4 +69,9 @@ module.exports = function(c) {
 					break;
 			}
 	});
+
+	process.on('SIGINT', function () {
+		identifyMe.action = "shutdown";
+		socket.emit('initial', identifyMe);
+	});
 };
