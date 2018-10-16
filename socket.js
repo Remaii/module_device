@@ -72,10 +72,10 @@ module.exports = function(c) {
 
 	socket.on('disconnect', function() {
 		setTimeout(function() {
+			identifyMe.action = "identifyDevice";
 			socket.emit("initial", identifyMe);
 		}, 10000);
 	});
-
 	process.on('SIGINT', function () {
 		easyData.action = "shutdown";
 		socket.emit('initial', easyData);
