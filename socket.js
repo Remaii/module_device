@@ -70,8 +70,14 @@ module.exports = function(c) {
 			}
 	});
 
+	socket.on('disconnect', function() {
+		setTimeout(function() {
+			socket.emit("initial", identifyMe);
+		}, 10000);
+	});
+
 	process.on('SIGINT', function () {
-		identifyMe.action = "shutdown";
-		socket.emit('initial', identifyMe);
+		easyData.action = "shutdown";
+		socket.emit('initial', easyData);
 	});
 };
