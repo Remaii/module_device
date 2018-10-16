@@ -13,7 +13,7 @@ module.exports = function(c) {
 		deviceId: c.deviceId,
 	};
 	console.log("identifyMe =", identifyMe);
-	socket.emit('link', identifyMe);
+	socket.emit('initial', identifyMe);
 
 	let easyData = {
 		room: null,
@@ -38,7 +38,7 @@ module.exports = function(c) {
 					}
 					break;
 				case 'errored':
-					console.log(data);
+					console.log(data, "error");
 					break;
 				case 'reload_me':
 					exec.shell('pm2 reload all').then((out) => {
