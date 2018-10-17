@@ -50,9 +50,9 @@ module.exports = {
 		}
 	},
 	changeState: function(data) {
-		let found = _.find(PinActive, {uniq: data.pin.uniq });
+		let found = _.find(PinActive, {name: data.pin.name, number: data.pin.number });
 
-		console.log(found, "found?",PinActive, data, "changeState");
+		console.log(found, "found?", data, "changeState");
 		if (found) {
 			found.state = !found.state;
 			let n = found.state ? 1 : 0;
