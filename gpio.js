@@ -51,8 +51,6 @@ module.exports = {
 	},
 	changeState: function(data) {
 		let found = _.find(PinActive, {name: data.pin.name, number: data.pin.number });
-
-		console.log(found, "found?", data, "changeState");
 		if (found) {
 			found.state = !found.state;
 			let n = found.state ? 1 : 0;
