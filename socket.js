@@ -32,9 +32,10 @@ module.exports = function(c) {
 				break;
 			case "changeState":
 				if (data.pin && data.uniq === c.deviceId) {
+					gpio.changeState(data);
 					easyData.action = "stateChanged";
 					easyData.pin = data.pin;
-					gpio.changeState(data);
+					easyData.pin.state = !easyData.pin.state;
 					socket.emit('infos', easyData);
 				}
 				break;
