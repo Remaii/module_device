@@ -21,6 +21,7 @@ module.exports = function(c) {
 	socket.emit('initial', identifyMe);
 
 	socket.on('update', function(data) {
+		console.log(data);
 		if (data.uniq === c.deviceId || data.deviceId === c.deviceId) {
 			switch (data.action) {
 				case "confUpdate":
