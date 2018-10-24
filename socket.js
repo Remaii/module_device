@@ -13,13 +13,25 @@ module.exports = function(c) {
 		action: "",
 		deviceId: c.deviceId
 	};
-	let identifyMe = {
+	const identifyMe = {
 		action: "identifyDevice",
 		deviceId: c.deviceId,
 	};
 	console.log("identifyMe =", identifyMe);
 	socket.emit('initial', identifyMe);
 
+	socket.on('update', function(data) {
+		if (data.uniq === c.deviceId || data.deviceId === c.deviceId) {
+			switch (data.action) {
+				case "confUpdate":
+					socket.emit('initial', identifyMe);
+					break;
+				default:
+					console.log(data, "is for me but not handled");
+					break;
+			}
+		}
+	});
 
 	socket.on('link', function(data) {
 		console.log(data, 'link receive');
@@ -74,7 +86,6 @@ module.exports = function(c) {
 
 	socket.on('disconnect', function() {
 		setTimeout(function() {
-			identifyMe.action = "identifyDevice";
 			socket.emit("initial", identifyMe);
 		}, 10000);
 	});
