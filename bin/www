@@ -4,9 +4,9 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('module-device:server');
-var http = require('http');
+const app = require('../app');
+const debug = require('debug')('module-device:server');
+const http = require('http');
 let config = require('../env/');
 
 /**

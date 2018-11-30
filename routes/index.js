@@ -1,14 +1,15 @@
-var express = require('express');
-var router = express.Router();
-var socket = require('../socket');
-var config = require('../env');
+const express = require('express');
+const router = express.Router();
+const config = require('../env');
+const jsonfile = require('jsonfile');
+const pathConf =  __dirname + "/../env/device.config";
 
 const pageData = {
 	title: 'Domotique',
 	texte: "This device works with remaii.tk website," +
 	"to use and configure this device you need to register on website",
 	link: "https://remaii.tk",
-	deviceId: config.deviceId || null
+	deviceId: config.deviceId
 };
 
 /* GET home page. */
@@ -18,9 +19,11 @@ router.get('/', function(req, res) {
 
 router.post('/', function(req, res) {
 	if (req.body.deviceId) {
-		pageData.deviceId = req.body.deviceId;
-	} else {
-		pageData.deviceId = null;
+		jsonfile.writeFile(pathConf, {
+			deviceId: req.body.deviceId,
+		}).then(() => {
+			pageData.deviceId = req.body.deviceId;
+		}).catch(err => console.log(err, 'err'));
 	}
 	return res.render('index', pageData);
 });
