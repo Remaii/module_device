@@ -1,0 +1,17 @@
+<form  id="deviceForm" method="post" submit="/"> <!--  -->
+    <div class="input-group col-md-12">
+        <div class="input-group-addon">
+            <span class="input-group-text" id="basic-addon1">Device ID:</span>
+        </div>
+        <input id="deviceIdField" type="text" class="form-control" placeholder="dvs_...." aria-label="dvs_...." aria-describedby="basic-addon1" name="deviceId" value="<%= deviceId %>">
+        <div class="input-group-btn">
+            <button type="submit" form="deviceForm" class="btn btn-primary">Save</button><!--  -->
+        </div>
+    </div>
+    <br>
+    <div class="input-group col-md-12">
+        <div class="checkbox">
+            <label><input id="majAutoField" class="form-control" type="checkbox" name="maj_auto" value="<%= maj_auto %>">Automated update</label>
+        </div>
+    </div>
+</form>

@@ -9,7 +9,8 @@ const pageData = {
 	texte: "This device works with remaii.tk website," +
 	"to use and configure this device you need to register on website",
 	link: "https://remaii.tk",
-	deviceId: config.deviceId
+	deviceId: config.deviceId,
+	maj_auto: config.maj_auto
 };
 
 /* GET home page. */
@@ -18,6 +19,7 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', function(req, res) {
+	console.log(req.body, "body");
 	if (req.body.deviceId) {
 		jsonfile.writeFile(pathConf, {
 			deviceId: req.body.deviceId,
