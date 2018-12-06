@@ -15,9 +15,10 @@ function changeState(nPin) {
 };
 
 function parseIt(data) {
+	let split = data.split(' ');
 	let ret = {
-		temp: data.split(' ')[0],
-		hum: data.split(' ')[2]
+		temp: split[0].slice(4,0),
+		hum: split[2]
 	};
 	return ret;
 };
@@ -29,7 +30,6 @@ function setState(nPin, i) {
 	PinActive[i] = nPin;
 	PinActive[i].gpio = new Gpio(number, mode);
 
-	console.log('mode =', mode, 'n =', n, 'number =', number);
 	if (mode === "out") {
 		setTimeout(() => {
 			PinActive[i].gpio.writeSync(0);
@@ -57,7 +57,7 @@ process.on('SIGINT', function () {
 
 module.exports = {
 	initial: function(device) {
-		console.log("init pins", device.pins.length);
+		console.log(device.pins.length, "pin to init");
 		if (device.pins.length > 0) {
 			_.each(device.pins, function (p, i) {
 				if (PinActive[i]) {
