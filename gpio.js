@@ -17,8 +17,8 @@ function changeState(nPin) {
 function parseDataFromAdafruitDHT(data) {
 	let split = data.split(' ');
 	let ret = {
-		temp: split[0].slice(5),
-		hum: split[2].slice(9)
+		temp: split[0].slice(5).slice(0,4),
+		hum: split[2].slice(9).slice(0,8)
 	};
 	return ret;
 };
