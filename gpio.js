@@ -14,6 +14,15 @@ function changeState(nPin) {
 	return ;
 };
 
+function parseIt(data) {
+	let ret = {
+		temp: data.split(' ')[0],
+		hum: data.split(' ')[1]
+	};
+	console.log(ret, "ret!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+	return ret;
+};
+
 function setState(nPin, i) {
 	let mode = nPin.mode.toString().toLowerCase();
 	let number = parseInt(nPin.number);
@@ -33,8 +42,9 @@ function setState(nPin, i) {
 			PinActive[i].gpio.writeSync(n);
 		}, 1500);
 	} else if (mode === "in") {
-		PinActive[i].data = exec.shellSync(__dirname + '/bin/adafruit.py 22 ' + number).stdout;
-		console.log(PinActive[i].data);
+		let inData = exec.shellSync(__dirname + '/bin/adafruit.py 22 ' + number).stdout;
+		console.log(inData);
+		PinActive[i].data = parseIt(inData);
 	} else {
 		console.log("mode pwm ?", mode==="pwm"?"yes is :":"no is :", mode);
 	}
