@@ -33,13 +33,9 @@ function setState(nPin, i) {
 			PinActive[i].gpio.writeSync(n);
 		}, 1500);
 	} else if (mode === "in") {
-		exec.shellSync(__dirname + '/bin/adafruit.py 22 ' + number)
-				.then(out => {
-					console.log(out, "Out");
-				})
-				.catch(err => {
-					console.log(err, "Error");
-				});
+		exec.shellSync(__dirname + '/bin/adafruit.py 22 ' + number, (err, out) => {
+			console.log(err, "err", out, "out");
+		});
 	} else {
 		console.log("mode pwm ?", mode==="pwm"?"yes is :":"no is :", mode);
 	}
