@@ -16,6 +16,7 @@ function changeState(nPin) {
 
 function parseIt(data) {
 	let split = data.split(' ');
+	console.log(split, "Split");
 	let ret = {
 		temp: split[0],
 		hum: split[1]
