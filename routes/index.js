@@ -3,7 +3,7 @@ const router = express.Router();
 const config = require('../env');
 const jsonfile = require('jsonfile');
 const pathConf =  __dirname + "/../env/device.config";
-
+const gpio = require('../gpio');
 const pageData = {
 	title: 'Domotique',
 	texte: "This device works with remaii.tk website," +
@@ -15,6 +15,10 @@ const pageData = {
 /* GET home page. */
 router.get('/', function(req, res) {
 	res.render('index', pageData);
+});
+
+router.get('/getData', function(req, res) {
+	res.end(gpio.getData());
 });
 
 router.post('/', function(req, res) {
