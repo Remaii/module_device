@@ -15,13 +15,10 @@ function changeState(nPin) {
 };
 
 function parseIt(data) {
-	let split = data.split(' ');
-	console.log(split, "Split");
 	let ret = {
-		temp: split[0],
-		hum: split[1]
+		temp: data.split(' ')[0].splice(4,0),
+		hum: data.split(' ')[2].splice(8)
 	};
-	console.log(ret, "ret!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 	return ret;
 };
 
