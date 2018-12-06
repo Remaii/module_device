@@ -1,6 +1,7 @@
 // 'use strict';
 
 const _ = require('lodash');
+const exec = require('execa');
 const Gpio = require('onoff').Gpio;
 let PinActive = [];
 
@@ -32,7 +33,7 @@ function setState(nPin, i) {
 			PinActive[i].gpio.writeSync(n);
 		}, 1500);
 	} else if (mode === "in") {
-		console.log('in mode :', PinActive[i].gpio.readSync());
+		console.log('in mode :', PinActive[i].gpio.readSync(), exec.shellSync(__dirname + '/bin/adafruit.py 22 ' + number));
 	} else {
 		console.log("mode pwm ?", mode==="pwm"?"yes is :":"no is :", mode);
 	}
