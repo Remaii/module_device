@@ -14,7 +14,7 @@ function changeState(nPin) {
 	return ;
 };
 
-function parseDataFromAdafruitDHT(data) {
+function parseDhtFromAdafruit(data) {
 	let split = data.split(' ');
 	let ret = {
 		temp: split[0].slice(5).slice(0,4),
@@ -26,11 +26,11 @@ function parseDataFromAdafruitDHT(data) {
 function setState(nPin, i) {
 	let mode = nPin.mode.toString().toLowerCase();
 	let number = parseInt(nPin.number);
-	let n = nPin.state ? 1 : 0;
 	PinActive[i] = nPin;
 	PinActive[i].gpio = new Gpio(number, mode);
 
 	if (mode === "out") {
+		let n = nPin.state ? nPin.reverse ? 0 : 1 : nPin.reverse ? 1 : 0;
 		setTimeout(() => {
 			PinActive[i].gpio.writeSync(0);
 		}, 500);
@@ -41,8 +41,7 @@ function setState(nPin, i) {
 			PinActive[i].gpio.writeSync(n);
 		}, 1500);
 	} else if (mode === "in") {
-		PinActive[i].data = parseDataFromAdafruitDHT(exec.shellSync(__dirname + '/bin/adafruit.py 22 ' + number).stdout);
-		console.log(PinActive[i].data);
+		PinActive[i].data = parseDhtFromAdafruit(exec.shellSync(__dirname + '/bin/adafruit.py ' + nPin.sensorType + ' ' + number).stdout);
 	} else {
 		console.log("mode pwm ?", mode==="pwm"?"yes is :":"no is :", mode);
 	}
@@ -87,9 +86,7 @@ module.exports = {
 				console.log('out read');
 				ret.data[pin.name] = pin.gpio.readSync();
 			} else if (pin.mode === 'in') {
-				let path = __dirname + '/bin/adafruit.py 22 ' + pin.number;
-				console.log('in read', path);
-				ret.data[pin.name] = parseDataFromAdafruitDHT(exec.shellSync(path).stdout);
+				ret.data[pin.name] = parseDhtFromAdafruit(exec.shellSync(__dirname + '/bin/adafruit.py ' + pin.sensorType + ' ' + pin.number).stdout);
 			} else {
 				console.log('other read');
 				ret.data[pin.name] = pin.mode;
