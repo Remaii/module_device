@@ -19,15 +19,22 @@ function setState(nPin, i) {
 	let n = nPin.state ? 1 : 0;
 	PinActive[i] = nPin;
 	PinActive[i].gpio = new Gpio(number, mode);
-	setTimeout(() => {
-		PinActive[i].gpio.writeSync(0);
-	}, 500);
-	setTimeout(() => {
-		PinActive[i].gpio.writeSync(1);
-	}, 1000);
-	setTimeout(() => {
-	PinActive[i].gpio.writeSync(n);
-	}, 1500);
+
+	if (mode === "out") {
+		setTimeout(() => {
+			PinActive[i].gpio.writeSync(0);
+		}, 500);
+		setTimeout(() => {
+			PinActive[i].gpio.writeSync(1);
+		}, 1000);
+		setTimeout(() => {
+		PinActive[i].gpio.writeSync(n);
+		}, 1500);
+	} else if (mode === "in") {
+		console.log('in mode :', PinActive[i].gpio.readSync());
+	} else {
+		console.log("mode pwm ?", mode==="pwm"?"yes is :":"no is :", mode);
+	}
 };
 
 process.on('SIGINT', function () {
