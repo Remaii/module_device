@@ -1,6 +1,7 @@
 // 'use strict';
 
 const _ = require('lodash');
+const exec = require('execa');
 const Gpio = require('onoff').Gpio;
 let PinActive = [];
 
@@ -11,6 +12,15 @@ function changeState(nPin) {
 
 	pin.writeSync(!pin.readSync());
 	return ;
+};
+
+function parseDataFromAdafruitDHT(data) {
+	let split = data.split(' ');
+	let ret = {
+		temp: split[0].slice(5),
+		hum: split[2].slice(9)
+	};
+	return ret;
 };
 
 function setState(nPin, i) {
@@ -28,10 +38,11 @@ function setState(nPin, i) {
 			PinActive[i].gpio.writeSync(1);
 		}, 1000);
 		setTimeout(() => {
-		PinActive[i].gpio.writeSync(n);
+			PinActive[i].gpio.writeSync(n);
 		}, 1500);
 	} else if (mode === "in") {
-		console.log('in mode :', PinActive[i].gpio.readSync());
+		PinActive[i].data = parseDataFromAdafruitDHT(exec.shellSync(__dirname + '/bin/adafruit.py 22 ' + number).stdout);
+		console.log(PinActive[i].data);
 	} else {
 		console.log("mode pwm ?", mode==="pwm"?"yes is :":"no is :", mode);
 	}
@@ -46,7 +57,7 @@ process.on('SIGINT', function () {
 
 module.exports = {
 	initial: function(device) {
-		console.log("init pins", device.pins.length);
+		console.log(device.pins.length, "pin to init");
 		if (device.pins.length > 0) {
 			_.each(device.pins, function (p, i) {
 				if (PinActive[i]) {
@@ -63,6 +74,29 @@ module.exports = {
 			let n = found.state ? 1 : 0;
 			found.gpio.writeSync(n);
 		}
+	},
+	getData: function() {
+		let ret = {
+			configured: PinActive.length,
+			tested: 0,
+			data: {}
+		};
+		console.log('getData from all input configured');
+		_.each(PinActive, function(pin) {
+			if (pin.mode === 'out') {
+				console.log('out read');
+				ret.data[pin.name] = pin.gpio.readSync();
+			} else if (pin.mode === 'in') {
+				let path = __dirname + '/bin/adafruit.py 22 ' + pin.number;
+				console.log('in read', path);
+				ret.data[pin.name] = parseDataFromAdafruitDHT(exec.shellSync(path).stdout);
+			} else {
+				console.log('other read');
+				ret.data[pin.name] = pin.mode;
+			}
+			ret.tested++;
+		});
+		return ret;
 	},
 	getPinActive: function() {
 		return PinActive;
