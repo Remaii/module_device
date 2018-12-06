@@ -28,7 +28,6 @@ function setState(nPin, i) {
 	PinActive[i] = nPin;
 	PinActive[i].gpio = new Gpio(number, mode);
 
-	console.log("nPin:", nPin, "sensorType:", nPin.sensorType);
 	if (mode === "out") {
 		let n = nPin.state ? nPin.reverse ? 0 : 1 : nPin.reverse ? 1 : 0;
 		setTimeout(() => {
