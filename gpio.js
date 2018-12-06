@@ -87,8 +87,9 @@ module.exports = {
 				console.log('out read');
 				ret.data[pin.name] = pin.gpio.readSync();
 			} else if (pin.mode === 'in') {
-				console.log('in read');
-				ret.data[pin.name] = parseDataFromAdafruitDHT(exec.shellSync(__dirname + '/bin/adafruit.py 22 ' + parseInt(pin.number)).stdout);
+				let path = __dirname + '/bin/adafruit.py 22 ' + pin.number;
+				console.log('in read', path);
+				ret.data[pin.name] = parseDataFromAdafruitDHT(exec.shellSync(path).stdout);
 			} else {
 				console.log('other read');
 				ret.data[pin.name] = pin.mode;
