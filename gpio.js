@@ -17,8 +17,8 @@ function changeState(nPin) {
 function parseIt(data) {
 	let split = data.split(' ');
 	let ret = {
-		temp: split[0].slice(4),
-		hum: split[2].slice(8)
+		temp: split[0].slice(5),
+		hum: split[2].slice(9)
 	};
 	return ret;
 };
