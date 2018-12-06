@@ -19,7 +19,8 @@ function setState(nPin, i) {
 	let n = nPin.state ? 1 : 0;
 	PinActive[i] = nPin;
 	PinActive[i].gpio = new Gpio(number, mode);
-	
+
+	console.log('mode =', mode, 'n =', n, 'number =', number);
 	if (mode === "out") {
 		setTimeout(() => {
 			PinActive[i].gpio.writeSync(0);
