@@ -18,7 +18,7 @@ function parseDataFromAdafruitDHT(data) {
 	let split = data.split(' ');
 	let ret = {
 		temp: split[0].slice(5).slice(0,4),
-		hum: split[2].slice(9).slice(0,8)
+		hum: split[2].slice(9).slice(0,7)
 	};
 	return ret;
 };
