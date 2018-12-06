@@ -18,9 +18,7 @@ router.get('/', function(req, res) {
 });
 
 router.get('/getData', function(req, res) {
-	let data = gpio.getData();
-	console.log(data, "data");
-	return res.end(data);
+	return res.send({ data : gpio.getData()});
 });
 
 router.post('/', function(req, res) {
