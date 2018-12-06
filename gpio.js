@@ -9,7 +9,6 @@ function changeState(nPin) {
 	console.log("changeState");
 	let pin = new gpio(nPin.port, nPin.mode);
 	// do change
-
 	pin.writeSync(!pin.readSync());
 	return ;
 };
@@ -83,13 +82,26 @@ module.exports = {
 		console.log('getData from all input configured');
 		_.each(PinActive, function(pin) {
 			if (pin.mode === 'out') {
-				console.log('out read');
-				ret.data[pin.name] = pin.gpio.readSync();
+				ret.data[pin.name] = {
+					defaultState: pin.state,
+					mode: pin.mode,
+					number: pin.number,
+					reverse: pin.reverse ? "yes":"no",
+					active: pin.gpio.readSync()
+				};
+				console.log('out read', ret.data[pin.name]);
 			} else if (pin.mode === 'in') {
 				ret.data[pin.name] = parseDhtFromAdafruit(exec.shellSync(__dirname + '/bin/adafruit.py ' + pin.sensorType + ' ' + pin.number).stdout);
+				console.log('in read', ret.data[pin.name]);
 			} else {
-				console.log('other read');
-				ret.data[pin.name] = pin.mode;
+				ret.data[pin.name] = {
+					defaultState: pin.state,
+					mode: pin.mode,
+					number: pin.number,
+					reverse: pin.reverse ? "yes":"no",
+					active: pin.gpio.readSync()
+				};
+				console.log('other read', ret.data[pin.name]);
 			}
 			ret.tested++;
 		});
