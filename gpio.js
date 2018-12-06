@@ -84,10 +84,13 @@ module.exports = {
 		console.log('getData from all input configured');
 		_.each(PinActive, function(pin) {
 			if (pin.mode === 'out') {
+				console.log('out read');
 				ret.data[pin.name] = pin.gpio.readSync();
 			} else if (pin.mode === 'in') {
+				console.log('in read');
 				ret.data[pin.name] = parseDataFromAdafruitDHT(exec.shellSync(__dirname + '/bin/adafruit.py 22 ' + pin.number).stdout);
 			} else {
+				console.log('other read');
 				ret.data[pin.name] = pin.mode;
 			}
 			ret.tested++;
